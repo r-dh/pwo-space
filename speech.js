@@ -1,4 +1,6 @@
-
+const btn = document.querySelector('.button.mic')
+const texttop = document.getElementById("texttop")
+const instructions = document.getElementById("instructions")
 
 const SpeechRecognition =
   window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -9,44 +11,42 @@ recognition.lang = "nl-NL";
 recognition.interimResults = false;
 
 
-//const loadingScreen = document.getElementById('loading-screen');
-
-loadingScreen.addEventListener('transitionend', () => {
-	const btn = document.querySelector('.button.mic')
-	const intro = document.getElementById("intro")
-
-	btn.addEventListener("click", () => {
-	  recognition.start();
-	  updateInfoStatus(true);
-	});
-
-});
-
-
 function updateInfoStatus(listening) {
 	if(listening) {
-		intro.innerHTML = "Listening..."
-		intro.style.display = ""
+		texttop.innerHTML = "Aan het luisteren..."
+		texttop.style.display = ""
 	} else {
-		intro.style.display = "none"
+		texttop.style.display = "none"
 	}
 }
 
 function updateBottomStatus(text) {
-	const bottomtext = document.getElementById("instructions")
-	if(text !== "") {
-		bottomtext.innerHTML = text
-		intro.style.display = ""
+	if(text) {
+		instructions.innerHTML = "U: " + text
+		instructions.style.display = ""
 	} else {
-		bottomtext.innerHTML = ""
-		intro.style.display = "none"
+		instructions.innerHTML = ""
+		instructions.style.display = "none"
 	}
 }
 
+btn.addEventListener("click", () => {
+	playanimation = false;
+	recognition.start();
+	updateInfoStatus(true);
+	updateBottomStatus();
+	btn.classList.remove("pulse")
+	btn.style.display = "none"
+});
 
 recognition.onresult = function (event) {
-  const last = event.results.length - 1;
-  const text = event.results[last][0].transcript;
-  console.log(text);
-  updateBottomStatus(text);
+	const last = event.results.length - 1;
+	const text = event.results[last][0].transcript;
+	console.log(text);
+	updateBottomStatus(text);
+}
+
+recognition.onend = function (event) {
+	updateInfoStatus(false)
+	btn.style.display = ""
 }

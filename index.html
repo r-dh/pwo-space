@@ -14,20 +14,13 @@
 			<div id="loader"></div>
 		</section>
 
-
 		<canvas id="c"></canvas>
 
 		<button class="button mic">
 			<img id="mic-icon" src="./img/mic-on.svg">
 		</button>
 
-		<!-- <div id="debug">
-		  <div>x:<span id="x"></span></div>
-		  <div>y:<span id="y"></span></div>
-		  <div>z:<span id="z"></span></div>
-		</div> -->
-
-		<div class="parent"><div class="textoverlay top" id="intro" style="display:none;"></div></div>
+		<div class="parent"><div class="textoverlay top" id="texttop" style="display:none;"></div></div>
 		<div class="parent bottom"><div class="textoverlay" id="instructions" style="display:none;"></div></div>
 
 		<script type="text/javascript">
@@ -35,35 +28,37 @@
 			let txt = 'Hallo, welkom bij de projectpagina van pwo space.';
 			let txtbot = 'Klik op de microfoon rechtsonder om de client te verwelkomen.';
 			let speed = 80; //milliseconds
+			let playanimation = true;
 
-			function typeWriter() {
-			  if (i < txt.length) {
-			    document.getElementById("intro").innerHTML += txt.charAt(i);
-			    i++;
-			    setTimeout(typeWriter, speed);
-			  }
-			  else {
-			  	i = 0;
-			  	//document.body.insertAdjacentHTML('beforeend', '<div class="parent bottom"><div class="textoverlay" id="instructions"></div></div>');
-			  	document.getElementById("instructions").style.display = ""
-			  	setTimeout(bottomWriter, 1000); 
-			  }
+			function topWriter() {
+				if(!playanimation) return;
+				if (i < txt.length) {
+					document.getElementById("texttop").innerHTML += txt.charAt(i);
+					i++;
+					setTimeout(topWriter, speed);
+				}
+				else {
+					i = 0;
+					document.getElementById("instructions").style.display = ""
+					setTimeout(bottomWriter, 1000);
+					setTimeout( function() {document.querySelector('.button.mic').classList.add("pulse")}, 3000);
+				}
 			}
 
 			function bottomWriter() {
-			  if (i < txtbot.length) {
-			    document.getElementById("instructions").innerHTML += txtbot.charAt(i);
-			    i++;
-			    setTimeout(bottomWriter, speed);
-			  }
+				if(!playanimation) return;
+				if (i < txtbot.length) {
+					document.getElementById("instructions").innerHTML += txtbot.charAt(i);
+					i++;
+					setTimeout(bottomWriter, speed);
+				}
 			}
 
 			const loadingScreen = document.getElementById('loading-screen');
 			
 			loadingScreen.addEventListener('transitionend', () => {
-				document.getElementById("intro").style.display = ""
-				//document.body.insertAdjacentHTML('beforeend', '<div class="parent"><div class="textoverlay top" id="intro"></div></div>');
-			  	typeWriter();
+				document.getElementById("texttop").style.display = ""
+			  	topWriter();
 			});
 		</script>
 	</body>

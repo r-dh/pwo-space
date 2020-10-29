@@ -89,7 +89,7 @@ function init() {
   {
     const loadingManager = new THREE.LoadingManager(() => {
     
-      const loadingScreen = document.getElementById( 'loading-screen' );
+      const loadingScreen = document.getElementById('loading-screen');
       loadingScreen.classList.add('fade-out');
       
       // optional: remove loader from DOM via event listener
