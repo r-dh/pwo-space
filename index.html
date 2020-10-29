@@ -7,7 +7,6 @@
 		<link rel="stylesheet" href="./speechstyle.css">
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js" integrity="sha512-yNJzAsg5JyP91u+sLHlUDULMBd3hmEiVkYeeN1cQBKaLZ7EyT6oH2u5THNIRM2Fu6VKcZJv+F/QAp1h/qzy9Ow==" crossorigin="anonymous"></script>
 		<script type="module" src="scene.js" ></script>
-		<!-- <script type="text/javascript" src="./js/BokehPass.js" ></script> -->
 	</head>
 	<body>
 
@@ -22,24 +21,20 @@
 			<img id="mic-icon" src="./img/mic-on.svg">
 		</button>
 
-		<!-- <div class="textoverlay" id="intro"></div> -->
-
 		<!-- <div id="debug">
 		  <div>x:<span id="x"></span></div>
 		  <div>y:<span id="y"></span></div>
 		  <div>z:<span id="z"></span></div>
 		</div> -->
 
-<!-- 		<script src="js/three.js"></script> -->
-		<!-- <script src="http://cdnjs.cloudflare.com/ajax/libs/three.js/r58/three.min.js"></script> -->
-		<script type="text/javascript">
-			//const xElem = document.querySelector('#hilde');
-			//xElem.textContent = "Hallo, ik ben Hilde"
+		<div class="parent"><div class="textoverlay top" id="intro" style="display:none;"></div></div>
+		<div class="parent bottom"><div class="textoverlay" id="instructions" style="display:none;"></div></div>
 
-			var i = 0;
-			var txt = 'Hallo, welkom bij de projectpagina van pwo space.'; /* The text */
-			var txtbot = 'Klik op de microfoon rechtsonder om de client te verwelkomen.';
-			var speed = 80; /* The speed/duration of the effect in milliseconds */
+		<script type="text/javascript">
+			let i = 0;
+			let txt = 'Hallo, welkom bij de projectpagina van pwo space.';
+			let txtbot = 'Klik op de microfoon rechtsonder om de client te verwelkomen.';
+			let speed = 80; //milliseconds
 
 			function typeWriter() {
 			  if (i < txt.length) {
@@ -49,7 +44,8 @@
 			  }
 			  else {
 			  	i = 0;
-			  	document.body.insertAdjacentHTML('beforeend', '<div class="parent bottom"><div class="textoverlay" id="instructions"></div></div>');
+			  	//document.body.insertAdjacentHTML('beforeend', '<div class="parent bottom"><div class="textoverlay" id="instructions"></div></div>');
+			  	document.getElementById("instructions").style.display = ""
 			  	setTimeout(bottomWriter, 1000); 
 			  }
 			}
@@ -64,14 +60,9 @@
 
 			const loadingScreen = document.getElementById('loading-screen');
 			
-			// optional: remove loader from DOM via event listener
 			loadingScreen.addEventListener('transitionend', () => {
-				document.body.insertAdjacentHTML('beforeend', '<div class="parent"><div class="textoverlay top" id="intro"></div></div>');
-				//let overlayinto = '<div class="textoverlay" id="intro"></div>'
-				//document.body.append(overlayinto);
-				//let myintro = document.createElement("div");
-				//myintro.id = "intro";
-				//myintro.clasName = "textoverlay"
+				document.getElementById("intro").style.display = ""
+				//document.body.insertAdjacentHTML('beforeend', '<div class="parent"><div class="textoverlay top" id="intro"></div></div>');
 			  	typeWriter();
 			});
 		</script>
