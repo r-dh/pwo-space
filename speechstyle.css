@@ -1,0 +1,119 @@
+<style>
+.button {
+  position: fixed;
+  z-index: 2;
+  right: 20px;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
+  border: none;
+  border-radius: 50%;
+  padding: 15px;
+}
+
+#button {
+    position: fixed;
+    bottom: 16px;
+    right: 16px;
+    padding: 16px;
+    border-radius: 50%;
+    margin-bottom: 0px;
+    background-color: #FFF;
+    opacity: .9;
+    z-index: 2;
+    box-shadow: 0 0 4px rgba(0,0,0,.15);
+}
+button {
+  cursor: pointer;
+  text-transform: uppercase;
+}
+.button.mic {
+    position: fixed;
+    bottom: 16px;
+    right: 16px;
+    padding: 16px;
+    border-radius: 50%;
+    margin-bottom: 0px;
+    background-color: #FFF;
+    opacity: .9;
+    z-index: 2;
+    box-shadow: 0 0 4px rgba(0,0,0,.15);
+}
+#mic-icon {
+  width: 100%;
+  height: 100%;
+}
+.ui {
+  position: absolute;
+}
+
+#info {
+    color: #fff;
+    font-family: Monospace;
+    font-size: 16px;
+    line-height: 24px;  
+    position: absolute;
+    top: 0px;
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+    text-align: center;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.textoverlay {
+  position: relative;
+  margin: 0 auto;
+  font-size: 23px;
+  padding: 1em;
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  font-family: monospace;
+  box-sizing: border-box;
+  text-align: center;
+  display:inline-block;
+}
+
+.top {
+  top: 2em;
+}
+
+.bottom {
+  position: fixed;
+  bottom: 2em;
+}
+
+.textoverlay:empty
+{
+    display:none;
+}
+
+.parent {
+  text-align: center;
+  width: 100%;
+}
+
+.cursor {
+  display: inline-block;
+  width: 2px;
+  height: 25px;
+  background: #333;
+}
+
+a {
+  color: #ff0;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+</style>
