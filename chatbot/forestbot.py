@@ -24,8 +24,8 @@ from data.database import Database, singleton
 @singleton
 class ForestBot:
     def __init__(self):
-        self.loadData();
         self.db = Database()
+        self.loadData();
 
     def loadData(self):
         datapath = os.path.dirname(os.path.abspath(__file__)) + "/data/"
@@ -34,7 +34,7 @@ class ForestBot:
 
         if not glob.glob(datapath + "*.pkl"):  
             print("[SPACEAPP] ForestBot: Initialising a fresh install...")
-            data_to_classifier.execute()
+            data_to_classifier.execute(self.db, datapath)
 
             timeout = 5
             sec = 0
