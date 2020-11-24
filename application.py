@@ -14,16 +14,6 @@ hash_ = TextToHash()
 def index():
     return render_template("index.html")
 
-@app.route("/wav")
-def streamwav():
-    def generate():
-        with open("audio/out150.wav", "rb") as fwav:
-            data = fwav.read(1024)
-            while data:
-                yield data
-                data = fwav.read(1024)
-    return Response(generate(), mimetype="audio/x-wav")
-
 @app.route('/process', methods=['POST'])
 def get_bot_response():
     print("[SPACEAPP] /process received POST request in backend:\n\t- Request form:", request.form)
