@@ -1,6 +1,5 @@
 import os
 
-
 from flask import Flask, request, render_template, Response, jsonify
 from chatbot.masterbot import MasterBot 
 from audio.texttohash import TextToHash
@@ -45,8 +44,4 @@ def get_bot_response():
     print("[SPACEAPP] Response:", response, "\n")
     dictResponse = jsonify({ 'bot_response': response })
 
-    return dictResponse #response
-
-
-if __name__ == "__main__":
-    app.run(debug=True)
+    return dictResponse
