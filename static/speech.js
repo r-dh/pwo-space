@@ -40,6 +40,15 @@ btn.addEventListener("click", () => {
 	btn.style.display = "none";
 });
 
+function replyKey(e) {
+	//If space or enter
+	if(e.keyCode === 13 || e.keyCode == 32) {
+		btn.click();
+	}
+}
+document.addEventListener('keydown', replyKey);
+
+
 recognition.onresult = function (event) {
 	const last = event.results.length - 1;
 	const text = event.results[last][0].transcript;
