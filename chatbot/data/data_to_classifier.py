@@ -68,8 +68,8 @@ def converter(labels, data):
 def save(text_classifier, tfidfconverter, path): #todo pimp path
 	if len(path) == 0:
 		path = str(os.path.dirname(__file__))
-	result = joblib.dump(text_classifier, str(path + '/randforest_cls.pkl')) 
-	joblib.dump(tfidfconverter, str(path + '/randforest_tfidf.pkl'))
+	result = joblib.dump(text_classifier, str(path + '/bart_randforest_cls.pkl')) 
+	joblib.dump(tfidfconverter, str(path + '/bart_randforest_tfidf.pkl'))
 	print("Pickled randforest classifiers at " + str(result[0]))
 
 

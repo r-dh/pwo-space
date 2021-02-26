@@ -9,30 +9,20 @@
 
 
 let renderer, camera, scene;
+var mixer, clock;
 
 function init() {
   const canvas = document.querySelector('#c');
-  //const xElem = document.querySelector('#x');
-  //const yElem = document.querySelector('#y');
-  //const zElem = document.querySelector('#z');
-  //const container = document.createElement( 'div' );
-  //document.body.appendChild( container );
-  //renderer = new THREE.WebGLRenderer( { antialias: true } );
 
-  //renderer = new THREE.WebGLRenderer({canvas});
-  renderer = new THREE.WebGLRenderer({canvas});
+  renderer = new THREE.WebGLRenderer({canvas, antialias: true});
+  renderer.setPixelRatio( window.devicePixelRatio );
+  renderer.setSize( window.innerWidth, window.innerHeight );
 
-  //container.appendChild(renderer.domElement);
-  //canvas.appendChild(renderer.domElement);
+  camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 100);
+  camera.position.z = 5;
 
-  const fov = 45;
-  const aspect = 2;  // the canvas default
-  const near = 0.1;
-  const far = 100;
-  camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
-  camera.position.set(0, 10, 756);
-
-  //const controls = new OrbitControls(camera, canvas);
+  //TODO: TEMP
+  //const controls = new THREE.OrbitControls(camera, canvas);
   //controls.target.set(0, 5, 0);
   //controls.update();
 
@@ -61,33 +51,6 @@ function init() {
     scene.add(light.target);
   }
 
-  //Position camera
-  function frameArea(sizeToFitOnScreen, boxSize, boxCenter, camera) {
-    const halfSizeToFitOnScreen = sizeToFitOnScreen * 0.5;
-    const halfFovY = THREE.MathUtils.degToRad(camera.fov * .5);
-    const distance = halfSizeToFitOnScreen / Math.tan(halfFovY);
-    // compute a unit vector that points in the direction the camera is now
-    // in the xz plane from the center of the box
-    const direction = (new THREE.Vector3())
-        .subVectors(camera.position, boxCenter)
-        .multiply(new THREE.Vector3(1, 0, 1))
-        .normalize();
-
-    // move the camera to a position distance units way from the center
-    // in whatever direction the camera was from the center already
-    camera.position.copy(direction.multiplyScalar(distance).add(boxCenter));
-
-    // pick some near and far values for the frustum that
-    // will contain the box.
-    camera.near = boxSize / 100;
-    camera.far = boxSize * 100;
-
-    camera.updateProjectionMatrix();
-
-    // point the camera to look at the center of the box
-    camera.lookAt(boxCenter.x, boxCenter.y, boxCenter.z);
-  }
-
   //Animation + loader
   {
     const loadingManager = new THREE.LoadingManager(() => {
@@ -103,77 +66,80 @@ function init() {
     });
 
     const gltfLoader = new THREE.GLTFLoader(loadingManager);
-    //todo, try renderpeople here
-    gltfLoader.load('static/angelica/scene.gltf', (gltf) => {
-    //gltfLoader.load('./sophia/rp_sophia_animated_003_idling.glb', (gltf) => {
-      const root = gltf.scene;
-      //root.rotateY(Math.PI/0.5)
-      //root.rotation.y = 0;//Math.PI
-      //console.log(root)
-      scene.add(root);
+      // gltfLoader.load('static/angelica/scene.gltf', (gltf) => {
+      // gltfLoader.load('./sophia/rp_sophia_animated_003_idling.glb', (gltf) => {
+      gltfLoader.load('static/nathan/nathan_sitting_fidgeting.gltf', (gltf) => {
+      //gltfLoader.load('static/sophia/sophia_idling.gltf', (gltf) => {
+    
+      scene.add(gltf.scene);
 
-      // compute the box that contains all the stuff
-      // from root and below
-      const box = new THREE.Box3().setFromObject(root);
+      var animations = gltf.animations;
+      console.log(animations) // name: Armature|Take 001|BaseLayer.001
+      //var keyRotationClip = gltf.animations[0] //THREE.AnimationClip.findByName( animations, 'A' );
+      var keyRotationClip = THREE.AnimationClip.findByName(animations, 'sitting_fidgeting.001');
 
-      const boxSize = box.getSize(new THREE.Vector3()).length();
-      const boxCenter = box.getCenter(new THREE.Vector3());
+      //cut first frame
+      //keyRotationClip = THREE.AnimationUtils.subclip(keyRotationClip, "idling", 2, Infinity, 30);// : AnimationClip
 
-      // set the camera to frame the box
-      frameArea(boxSize * 1, boxSize, boxCenter, camera); //1 instead of 0.5 //finetune
+      mixer = new THREE.AnimationMixer(gltf.scene);
+      var action = mixer.clipAction(keyRotationClip);
 
-      // update the Trackball controls to handle the new size
-      //controls.maxDistance = boxSize * 10;
-      //controls.target.copy(boxCenter);
-      //controls.update();
+      action.clampWhenFinished = true;
+      //action.loop = THREE.LoopPingPong; //THREE.LoopOnce;
+      action.play();
+
+      // center model
+      const object = gltf.scene;
+
+      const box = new THREE.Box3().setFromObject(object);
+      const center = box.getCenter(new THREE.Vector3());
+
+      var offset_sophia = 7;
+      var offset_nathan_sitting = 5.55;
+      var offset = offset_nathan_sitting;
+
+      object.position.x += (object.position.x - center.x);
+      object.position.y += (object.position.y - center.y - offset);
+      object.position.z += (object.position.z - center.z);
+
+      // disable view frustum culling
+      object.traverse(function(child) {
+
+        child.frustumCulled = false;
+
+      });
+
+      clock = new THREE.Clock();
+
+      window.addEventListener('resize', onWindowResize, false);
     });
   }
 }
 
-function main() {
 
-  function resizeRendererToDisplaySize(renderer) {
-    const canvas = renderer.domElement;
-    const width = canvas.clientWidth;
-    const height = canvas.clientHeight;
-    const needResize = canvas.width !== width || canvas.height !== height;
-    if (needResize) {
-      renderer.setSize(width, height, false);
-    }
-    return needResize;
+function onWindowResize() {
+
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+
+  renderer.setSize(window.innerWidth, window.innerHeight);
+
+}
+
+function animate() {
+
+  requestAnimationFrame( animate );
+
+  if ( mixer ) {
+
+    var delta = clock.getDelta();
+    mixer.update( delta );
+
   }
 
-/*  function onWindowResize() {
+  renderer.render( scene, camera );
 
-        camera.aspect = window.innerWidth / window.innerHeight;
-        camera.updateProjectionMatrix();
-
-        renderer.setSize( window.innerWidth, window.innerHeight );
-
-  }*/
-
-  function render() {
-    if (resizeRendererToDisplaySize(renderer)) {
-      const canvas = renderer.domElement;
-      camera.aspect = canvas.clientWidth / canvas.clientHeight;
-      camera.updateProjectionMatrix();
-    }
-
-    renderer.render(scene, camera);
-
-    requestAnimationFrame(render);
-    
-    //root.rotation.y += 0.01;
-  }
-  //window.addEventListener( 'resize', onWindowResize, false );
-  requestAnimationFrame(render);
-
-/*  xElem.textContent = boxCenter.x;
-  yElem.textContent = boxCenter.y;
-  zElem.textContent = boxCenter.z;*/
-
-  //console.log(controls)
 }
 
 init();
-main();
+animate(); 

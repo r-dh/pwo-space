@@ -29,11 +29,11 @@ def get_bot_response():
     category, response = masterbot.answer(user_input.strip())
     response_hash = hash_.hash(response)
     print(f"[DEBUG] Hash: {response_hash}")
-    print(f"[DEBUG] File exists: " + str(os.path.isfile(f"./audio/output/{response_hash}.wav")))
+    print(f"[DEBUG] File exists: " + str(os.path.isfile(f"./audio/bart/{response_hash}.wav")))
 
-    if os.path.isfile(f"./audio/output/{response_hash}.wav"):
+    if os.path.isfile(f"./audio/bart/{response_hash}.wav"):
     	def generate(responsehash):
-    	    with open(f"{os.getcwd()}/audio/output/{responsehash}.wav", "rb") as fwav:
+    	    with open(f"{os.getcwd()}/audio/bart/{responsehash}.wav", "rb") as fwav:
     	        data = fwav.read(1024)
     	        while data:
     	            yield data

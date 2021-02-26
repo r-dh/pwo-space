@@ -5,8 +5,10 @@
 		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
 		<link rel="stylesheet" href="/static/css/style.css">
 		<link rel="stylesheet" href="/static/css/speechstyle.css">
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js" integrity="sha512-yNJzAsg5JyP91u+sLHlUDULMBd3hmEiVkYeeN1cQBKaLZ7EyT6oH2u5THNIRM2Fu6VKcZJv+F/QAp1h/qzy9Ow==" crossorigin="anonymous"></script>
-		<script src="https://cdn.rawgit.com/mrdoob/three.js/master/examples/js/loaders/GLTFLoader.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r126/three.min.js" integrity="sha512-n8IpKWzDnBOcBhRlHirMZOUvEq2bLRMuJGjuVqbzUJwtTsgwOgK5aS0c1JA647XWYfqvXve8k3PtZdzpipFjgg==" crossorigin="anonymous"></script>
+		<script src="https://unpkg.com/three@0.126.0/examples/js/loaders/GLTFLoader.js"></script>
+		<script src="https://unpkg.com/three@0.126.0/examples/js/controls/OrbitControls.js"></script>
+
 	</head>
 	<body>
 
@@ -27,7 +29,7 @@
 		<script type="text/javascript">
 			let i = 0;
 			let txt = 'Hallo, welkom bij de projectpagina van pwo space.';
-			let txtbot = 'Klik op de microfoon rechtsonder om de client te verwelkomen.';
+			let txtbot = 'Gebruik spatie of klik op de microfoon rechtsonder om de client te verwelkomen.';
 			let speed = 80; //milliseconds
 			let playanimation = true;
 

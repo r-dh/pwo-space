@@ -36,7 +36,7 @@ class Database:
 	_db = {}
 
 	def _open(self):
-		filepath = os.path.dirname(__file__) + "/hilde_data.json"
+		filepath = os.path.dirname(__file__) + "/bart_data.json"
 		assert(os.path.isfile(filepath))
 		with open(filepath, 'r') as file:
 			self._db = json.load(file)

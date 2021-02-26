@@ -29,8 +29,8 @@ class ForestBot:
 
     def loadData(self):
         datapath = os.path.dirname(os.path.abspath(__file__)) + "/data/"
-        classifier_path = str(datapath + "/randforest_cls.pkl")
-        tfidf_path = str(datapath + "/randforest_tfidf.pkl")
+        classifier_path = str(datapath + "/bart_randforest_cls.pkl")
+        tfidf_path = str(datapath + "/bart_randforest_tfidf.pkl")
 
         if not glob.glob(datapath + "*.pkl"):  
             print("[SPACEAPP] ForestBot: Initialising a fresh install...")
@@ -83,9 +83,9 @@ class ForestBot:
 
 if __name__ == "__main__":
     fb = ForestBot()
-    print("Chatbot Hilde v0.2a\nWrite 'exit' to leave")
+    print("Chatbot Bart v0.2a\nWrite 'exit' to leave")
     while True:
         question = input("\n>>> ")
         if question == "exit": break
         antwoord = fb.answer(question)
-        print("Hilde:", antwoord)
+        print("Bart:", antwoord)
